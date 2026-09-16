@@ -6,7 +6,7 @@ mock tests, and track your progress over time — all in a single HTML file
 with no install and no server required.
 
 **Live demo:** open `index.html` in any browser, or visit this repo's
-https://qbitprime.github.io/USCIS_2025_Civics_Test_Flashcard_Quiz/
+[GitHub Pages link](../../settings/pages) once it's enabled.
 
 ---
 
@@ -49,13 +49,14 @@ choice is remembered.
 
 ## ⚠️ Before you rely on this for your interview
 
-Four questions have **personalized answers already filled in** for one
-specific address. **You must update them to match your own state,
-district, and current officials** — using someone else's answers at your
-actual USCIS interview will get those questions marked wrong.
+Four questions ship with a generic **"Answers will vary"** placeholder,
+because the correct answer depends on where you live. **You must fill
+these in with your own state's information** — the real interview needs
+your actual senators, representative, governor, and capital, not anyone
+else's.
 
-| # | Question | What to check |
-|---|----------|----------------|
+| # | Question | Where to look it up |
+|---|----------|----------------------|
 | 23 | Name one of your state's U.S. senators | [senate.gov/states](https://www.senate.gov/states/) |
 | 29 | Name your U.S. representative | [house.gov/representatives/find](https://www.house.gov/representatives/find-your-representative) |
 | 61 | Who is the governor of your state | Search "[your state] governor" |
@@ -63,7 +64,8 @@ actual USCIS interview will get those questions marked wrong.
 
 Four more questions ask for the **current national officeholders**
 (President, Vice President, Speaker of the House, Chief Justice). These
-are already filled in but can change — double-check them against
+come pre-filled with whoever held the role as of this file's last update,
+but that can change — double-check them against
 [uscis.gov/citizenship/testupdates](https://www.uscis.gov/citizenship/testupdates)
 close to your interview date, since USCIS requires the name of whoever is
 serving at the time of your interview.
@@ -77,11 +79,12 @@ serving at the time of your interview.
 3. Find the question by its number, e.g. for question 23:
 
    ```js
-   {id:23,cat:'system',star:false,q:`Who is one of your state's U.S. senators now?`,a:[`Rick Scott`,`Ashley Moody`],note:`Filled in for Gulfport, FL 33707. Good through your Sept 18, 2026 interview — Florida's Senate election isn't until Nov 3, 2026.`,imgQuery:[`Rick Scott`,`Ashley Moody`]},
+   {id:23,cat:'system',star:false,q:`Who is one of your state's U.S. senators now?`,a:[`Answers will vary.`],note:`Personal to you — look up your own state's senators before test day. (D.C. and territory residents: your answer is that you have no U.S. senators.)`},
    ```
 
-4. Replace the names inside the **`a:[ ... ]`** part with your own state's
-   answers. Each name goes in backticks (`` ` ``) separated by commas:
+4. Replace the placeholder inside the **`a:[ ... ]`** part with your own
+   state's answers. Each name goes in backticks (`` ` ``) separated by
+   commas:
 
    ```js
    a:[`Senator One Name`,`Senator Two Name`]
@@ -89,10 +92,12 @@ serving at the time of your interview.
 
 5. Optional — update or delete the **`note:`** text (it's just a reminder
    shown on the card; it doesn't affect grading).
-6. Optional — update **`imgQuery:`** with the new name(s) so the photo on
-   the back of the card matches. It pulls a thumbnail live from Wikipedia,
-   so use whatever the person's Wikipedia article is titled. You can also
-   delete the whole `imgQuery:` field if you'd rather not show a photo.
+6. Optional — add an **`imgQuery:`** field with the person's name so a
+   photo shows up on the back of the card. It pulls a thumbnail live from
+   Wikipedia, so use whatever that person's Wikipedia article is titled,
+   e.g. `imgQuery:\`Jane Q. Senator\`` (or `imgQuery:[\`Name One\`,\`Name
+   Two\`]` for the two-senator question). Leave it out if you'd rather not
+   show a photo.
 7. Repeat for questions **29**, **61**, and **62**.
 8. Save the file, then re-upload it to this repo (or re-run
    `git add / commit / push` if you're using the command line) to update
