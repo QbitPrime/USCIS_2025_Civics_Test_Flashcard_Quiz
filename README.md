@@ -6,7 +6,7 @@ mock tests, and track your progress over time — all in a single HTML file
 with no install and no server required.
 
 **Live demo:** open `index.html` in any browser, or visit this repo's
-[GitHub Pages link](../../settings/pages) once it's enabled.
+https://qbitprime.github.io/USCIS_2025_Civics_Test_Flashcard_Quiz/
 
 ---
 
