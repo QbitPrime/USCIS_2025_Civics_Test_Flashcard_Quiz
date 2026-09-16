@@ -36,14 +36,55 @@ Switch to **Mock Test** at the top for a timed, realistic run:
 - Every card shows an **all-time right/wrong count** under the question.
 - Click **🎯 Focus areas** to see your most-missed and strongest questions
   at a glance, so you know where to spend your remaining study time.
-- Progress (mastered cards, streaks, right/wrong history) saves
-  automatically. If your browser session doesn't support that, use the
-  **🔗 Auto-sync to a local file** or **⭳ Backup / ⭱ Restore** buttons to
-  keep a copy on disk.
 
 ### Dark mode
 Click the 🌙 icon top-right to switch themes for low-light studying. Your
-choice is remembered.
+choice is remembered the same way your progress is (see below).
+
+---
+
+## Where does your progress get saved?
+
+Short version: **automatically, in your own browser, on your own device —
+nothing is sent to me, to GitHub, or to anyone else.** No account, no
+login, no server involved.
+
+Here's exactly what happens, in order:
+
+1. **Normal case (this website):** progress is saved using your browser's
+   built-in `localStorage`, scoped to this exact page. It persists across
+   closing the tab, closing the browser, and restarting your computer.
+   It does **not** follow you to a different browser or a different
+   device — `localStorage` is tied to one browser on one machine.
+2. **If your browser blocks that** (some privacy modes, very locked-down
+   settings, etc.), the tool falls back to the optional local-file/backup
+   options below, and the status line under the toggles will tell you
+   plainly that automatic saving isn't available.
+3. *(If you're running this inside Claude.ai's own preview instead of the
+   live website, it also checks for an account-level storage API first —
+   not relevant for anyone using the actual GitHub Pages link.)*
+
+### About the JSON file / "Auto-sync" and "Backup" buttons
+
+These are **entirely optional** — the quiz saves your progress
+automatically without you touching them. They exist for two situations:
+you want a real file on disk as a backup, or you want to move your
+progress between two different browsers/devices (since `localStorage`
+alone can't do that).
+
+- **🔗 Auto-sync to a local file** — click once, pick (or create) a
+  `.json` file on your computer, and from then on every answer you grade
+  writes to that file automatically in the background, no further clicks.
+  Chrome/Edge only (this uses the File System Access API, which Safari
+  and Firefox don't support yet).
+- **⭳ Backup to file** — downloads a one-time snapshot of your progress
+  as a `.json` file, right now, wherever your browser saves downloads.
+- **⭱ Restore backup** — loads a previously saved `.json` file back into
+  the app. Useful if you cleared your browser data, switched computers,
+  or want to pick up where you left off somewhere else.
+
+None of this ever touches a server — the file only ever exists on your
+own computer, and only if you explicitly created one.
 
 ---
 
