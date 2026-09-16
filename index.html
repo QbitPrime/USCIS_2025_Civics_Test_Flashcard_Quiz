@@ -1,0 +1,1511 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
+
+html, body{
+  margin:0;
+  background:#F2ECDA;
+  transition:background-color .25s ease;
+}
+html.civ-dark, body.civ-dark{
+  background:#12161F;
+}
+.civ-root{
+  --paper:#F2ECDA;
+  --card:#FBF7EA;
+  --ink:#1E2A44;
+  --ink-soft:#4A5468;
+  --red:#8C2F2F;
+  --red-deep:#6E2222;
+  --gold:#A6813C;
+  --green:#3F6B4E;
+  --line:#CFC5A5;
+  --dot:rgba(30,42,68,0.055);
+  --note-bg:rgba(140,47,47,0.07);
+  --miss-hover-bg:rgba(140,47,47,0.08);
+  --stamp-bg:rgba(251,247,234,0.9);
+  --shadow: 0 1px 0 rgba(30,42,68,0.08);
+  font-family:'Inter',system-ui,sans-serif;
+  color:var(--ink);
+  background:var(--paper);
+  background-image:
+    radial-gradient(circle at 1px 1px, var(--dot) 1px, transparent 0);
+  background-size: 16px 16px;
+  border-radius:14px;
+  padding:28px 22px 34px;
+  max-width:640px;
+  margin:0 auto;
+  box-sizing:border-box;
+  transition:background-color .25s ease, color .25s ease;
+}
+.civ-root.civ-dark{
+  --paper:#12161F;
+  --card:#1B212C;
+  --ink:#E9E4D6;
+  --ink-soft:#9198A8;
+  --red:#E08668;
+  --red-deep:#C96E52;
+  --gold:#D8B872;
+  --green:#7CC69B;
+  --line:#333B4A;
+  --dot:rgba(255,255,255,0.045);
+  --note-bg:rgba(224,134,104,0.12);
+  --miss-hover-bg:rgba(224,134,104,0.16);
+  --stamp-bg:rgba(27,33,44,0.92);
+  --shadow: 0 1px 0 rgba(0,0,0,0.3);
+}
+.civ-root *{box-sizing:border-box;}
+.civ-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  border-bottom:1.5px solid var(--line);
+  padding-bottom:14px;
+  margin-bottom:18px;
+}
+.civ-eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+  color:var(--red);
+  font-weight:600;
+}
+.civ-title{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:26px;
+  font-weight:700;
+  margin:2px 0 2px;
+  color:var(--ink);
+}
+.civ-sub{
+  font-size:12px;
+  color:var(--ink-soft);
+}
+.civ-seal{
+  width:52px;height:52px;border-radius:50%;
+  border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gold);
+  flex-shrink:0;
+  position:relative;
+}
+.civ-seal svg{width:26px;height:26px;}
+.civ-header-right{
+  display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex-shrink:0;
+}
+.civ-theme-toggle{
+  width:34px;height:34px;border-radius:50%;
+  border:1px solid var(--line);
+  background:var(--card);
+  color:var(--ink);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;
+  transition:.15s;
+}
+.civ-theme-toggle:hover{border-color:var(--gold);}
+
+.civ-stats{
+  display:flex;
+  gap:10px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+.civ-stat{
+  flex:1;
+  min-width:130px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:9px 12px;
+  box-shadow:var(--shadow);
+}
+.civ-stat-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  color:var(--ink-soft);
+  margin-bottom:3px;
+}
+.civ-stat-value{
+  font-family:'Source Serif 4',serif;
+  font-size:17px;
+  font-weight:700;
+  color:var(--ink);
+}
+.civ-bar{
+  height:5px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:6px;
+}
+.civ-bar-fill{
+  height:100%;background:var(--gold);border-radius:3px;
+  transition:width .4s ease;
+}
+
+.civ-controls{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:16px;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.civ-toggle{
+  display:flex;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:3px;
+  gap:2px;
+}
+.civ-toggle button{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  border:none;background:transparent;
+  padding:6px 12px;border-radius:999px;
+  cursor:pointer;color:var(--ink-soft);
+  transition:.15s;
+}
+.civ-toggle button.active{
+  background:var(--ink);color:var(--paper);
+}
+.civ-reset{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--red);
+  background:none;border:none;
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  padding:4px;
+}
+.civ-reset:hover{color:var(--red-deep);}
+
+.civ-scene{
+  perspective:1600px;
+  margin-bottom:16px;
+}
+.civ-card{
+  position:relative;
+  width:100%;
+  min-height:340px;
+  transform-style:preserve-3d;
+  transition:transform .55s cubic-bezier(.4,.2,.2,1);
+  cursor:pointer;
+}
+.civ-card.civ-no-anim{
+  transition:none!important;
+}
+.civ-card.flipped{transform:rotateY(180deg);}
+.civ-face{
+  position:absolute;inset:0;
+  backface-visibility:hidden;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:var(--card);
+  box-shadow:0 10px 26px -14px rgba(30,42,68,0.35), var(--shadow);
+  padding:26px 24px 22px;
+  display:flex;
+  flex-direction:column;
+}
+.civ-face::before, .civ-face::after{
+  content:'';
+  position:absolute;
+  top:14px;
+  width:9px;height:9px;
+  border-radius:50%;
+  background:var(--paper);
+  border:1px solid var(--line);
+}
+.civ-face::before{left:16px;}
+.civ-face::after{left:32px;}
+.civ-back{transform:rotateY(180deg);}
+
+.civ-face-top{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  margin-left:34px;
+  margin-bottom:14px;
+}
+.civ-cat{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--ink-soft);
+  display:flex;align-items:center;gap:6px;
+}
+.civ-cat svg{width:15px;height:15px;color:var(--gold);}
+.civ-star{
+  font-size:11px;color:var(--red);
+  font-family:'IBM Plex Mono',monospace;
+}
+.civ-dots{display:flex;gap:4px;}
+.civ-dot{width:7px;height:7px;border-radius:50%;border:1.3px solid var(--gold);}
+.civ-dot.filled{background:var(--gold);}
+
+.civ-qnum{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--ink-soft);
+  margin-left:34px;
+  margin-bottom:6px;
+}
+.civ-qtext{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:22px;
+  line-height:1.3;
+  font-weight:600;
+  margin-left:34px;
+  color:var(--ink);
+  flex:1;
+}
+.civ-hint{
+  margin-top:auto;
+  text-align:center;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  color:var(--ink-soft);
+  letter-spacing:.05em;
+  padding-top:12px;
+}
+
+.civ-alabel{
+  margin-left:34px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+  color:var(--green);
+  margin-bottom:10px;
+}
+.civ-answers{
+  margin-left:34px;
+  list-style:none;
+  padding:0;
+  margin-top:0;
+  margin-bottom:10px;
+  flex:1;
+  overflow-y:auto;
+}
+.civ-answers li{
+  font-family:'Source Serif 4',Georgia,serif;
+  font-size:16px;
+  line-height:1.4;
+  padding-left:16px;
+  position:relative;
+  margin-bottom:6px;
+  color:var(--ink);
+}
+.civ-answers li::before{
+  content:'—';
+  position:absolute;left:0;color:var(--gold);
+}
+.civ-note{
+  margin-left:34px;
+  background:var(--note-bg);
+  border-left:2px solid var(--red);
+  padding:7px 10px;
+  font-size:11.5px;
+  color:var(--red-deep);
+  border-radius:0 6px 6px 0;
+  margin-bottom:4px;
+}
+.civ-backhint{
+  text-align:center;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  color:var(--ink-soft);
+  padding-top:4px;
+}
+
+.civ-stamp{
+  position:absolute;
+  top:40%;left:50%;
+  transform:translate(-50%,-50%) rotateY(180deg) rotate(-14deg) scale(0.6);
+  backface-visibility:hidden;
+  border:3px solid var(--red);
+  color:var(--red);
+  font-family:'IBM Plex Mono',monospace;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:.08em;
+  padding:8px 18px;
+  border-radius:8px;
+  opacity:0;
+  pointer-events:none;
+  background:var(--stamp-bg);
+  transition:opacity .25s ease, transform .35s ease;
+  z-index:5;
+}
+.civ-stamp.show{
+  opacity:1;
+  transform:translate(-50%,-50%) rotateY(180deg) rotate(-14deg) scale(1);
+}
+
+.civ-grade{
+  display:flex;gap:10px;
+  margin-bottom:6px;
+}
+.civ-grade button{
+  flex:1;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.03em;
+  padding:12px 10px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:.15s;
+  border:1.5px solid transparent;
+}
+.civ-miss{
+  background:var(--card);
+  border-color:var(--red)!important;
+  color:var(--red);
+}
+.civ-miss:hover{background:var(--miss-hover-bg);}
+.civ-got{
+  background:var(--green);
+  color:#fff;
+}
+.civ-got:hover{background:#325a41;}
+
+.civ-footnote{
+  text-align:center;
+  font-size:11px;
+  color:var(--ink-soft);
+  margin-top:8px;
+}
+
+.civ-done{
+  text-align:center;
+  padding:50px 20px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+}
+.civ-done h3{
+  font-family:'Source Serif 4',serif;
+  font-size:24px;
+  margin:10px 0 6px;
+}
+.civ-done p{color:var(--ink-soft);font-size:13px;margin-bottom:16px;}
+.civ-done button{
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--ink);color:var(--paper);
+  border:none;border-radius:999px;
+  padding:10px 20px;cursor:pointer;font-size:12px;
+}
+
+.civ-imgs-wrap{
+  margin-left:34px;
+  margin-bottom:10px;
+}
+.civ-imgs{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.civ-img-thumb{
+  display:block;
+  width:76px;height:76px;
+  border-radius:8px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--paper);
+  flex-shrink:0;
+}
+.civ-img-thumb img{
+  width:100%;height:100%;
+  object-fit:cover;
+  display:block;
+}
+.civ-img-skeleton{
+  background:linear-gradient(90deg, var(--paper) 25%, var(--line) 37%, var(--paper) 63%);
+  background-size:400% 100%;
+  animation:civ-shimmer 1.4s ease infinite;
+}
+@keyframes civ-shimmer{
+  0%{background-position:100% 0;}
+  100%{background-position:0 0;}
+}
+.civ-img-caption{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--ink-soft);
+  margin-top:4px;
+}
+
+.civ-qtally{
+  margin-left:34px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  color:var(--ink-soft);
+  margin-top:6px;
+}
+
+.civ-master-row{
+  text-align:center;
+  margin:2px 0 10px;
+}
+.civ-master-link{
+  background:none;border:none;
+  color:var(--gold);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+  padding:4px;
+}
+.civ-master-link:hover{color:var(--red);}
+
+.civ-modal-overlay{
+  position:fixed;inset:0;
+  background:rgba(20,26,40,0.55);
+  display:flex;align-items:center;justify-content:center;
+  z-index:60;
+  padding:20px;
+}
+.civ-modal{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  max-width:480px;width:100%;
+  max-height:82vh;
+  overflow-y:auto;
+  padding:22px;
+  box-shadow:0 20px 50px -20px rgba(0,0,0,0.4);
+}
+.civ-modal-head{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:12px;
+}
+.civ-modal-head h3{
+  font-family:'Source Serif 4',serif;font-size:19px;margin:0;
+}
+.civ-modal-head button{
+  background:none;border:none;cursor:pointer;
+  font-size:16px;color:var(--ink-soft);
+  line-height:1;padding:4px;
+}
+.civ-modal h4{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink-soft);margin:16px 0 8px;
+}
+.civ-modal h4:first-of-type{margin-top:0;}
+.civ-modal ol{list-style:none;padding:0;margin:0;}
+.civ-modal ol li{
+  display:flex;justify-content:space-between;gap:10px;
+  align-items:flex-start;
+  padding:8px 0;
+  border-bottom:1px solid var(--line);
+  font-size:12.5px;
+}
+.civ-modal ol li:last-child{border-bottom:none;}
+.civ-stat-q{font-family:'Source Serif 4',serif;font-size:13px;line-height:1.3;flex:1;}
+.civ-stat-nums{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;color:var(--ink-soft);
+  white-space:nowrap;flex-shrink:0;
+}
+.civ-stat-empty{color:var(--ink-soft);font-style:italic;border-bottom:none!important;}
+
+@media (max-width:420px){
+  .civ-qtext{font-size:18px;}
+  .civ-card{min-height:320px;}
+}
+</style>
+
+<div class="civ-root" id="civRoot">
+  <div class="civ-header">
+    <div>
+      <div class="civ-eyebrow">M-1778 · 2025 Edition</div>
+      <div class="civ-title">Civics Test Drill</div>
+      <div class="civ-sub">Naturalization interview practice cards</div>
+    </div>
+    <div class="civ-header-right">
+      <button class="civ-theme-toggle" id="civThemeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+      <div class="civ-seal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="civ-stats">
+    <div class="civ-stat">
+      <div class="civ-stat-label">Mastered</div>
+      <div class="civ-stat-value" id="civMasteredCount">0 / 128</div>
+      <div class="civ-bar"><div class="civ-bar-fill" id="civMasteredBar" style="width:0%"></div></div>
+    </div>
+    <div class="civ-stat">
+      <div class="civ-stat-label" id="civSessionLabel">This session</div>
+      <div class="civ-stat-value" id="civSessionStat">0 reviewed</div>
+    </div>
+  </div>
+
+  <div class="civ-controls">
+    <div class="civ-toggle" id="civModeToggle">
+      <button data-mode="practice" class="active">Practice</button>
+      <button data-mode="test">Mock Test</button>
+    </div>
+    <button class="civ-reset" id="civFocusBtn">🎯 Focus areas</button>
+  </div>
+
+  <div class="civ-controls">
+    <div class="civ-toggle" id="civFilterToggle">
+      <button data-filter="all" class="active">All 128 · 20Q/12 pass</button>
+      <button data-filter="star">★ 65/20 · 10Q/6 pass</button>
+    </div>
+    <button class="civ-reset" id="civResetBtn">Reset mastered ↺</button>
+  </div>
+
+  <div class="civ-controls" style="margin-top:-8px;">
+    <div class="civ-sub" style="font-size:10.5px;" id="civSyncStatus">Progress saves automatically to your account — safe to close your browser.</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button class="civ-reset" id="civSyncBtn" style="color:var(--ink-soft);">🔗 Auto-sync to a local file</button>
+      <button class="civ-reset" id="civExportBtn" style="color:var(--ink-soft);">⭳ Backup to file</button>
+      <button class="civ-reset" id="civImportBtn" style="color:var(--ink-soft);">⭱ Restore backup</button>
+      <input type="file" id="civImportFile" accept="application/json" style="display:none;">
+    </div>
+  </div>
+
+  <div id="civPlayArea">
+    <div class="civ-scene">
+      <div class="civ-card" id="civCard">
+        <div class="civ-stamp" id="civStamp">MASTERED</div>
+        <div class="civ-face civ-front" id="civFront">
+          <div class="civ-face-top">
+            <div class="civ-cat" id="civCatFront"></div>
+            <div class="civ-dots" id="civDotsFront"></div>
+          </div>
+          <div class="civ-qnum" id="civQNum"></div>
+          <div class="civ-qtext" id="civQText"></div>
+          <div class="civ-qtally" id="civQTally"></div>
+          <div class="civ-hint">Tap card to reveal accepted answers</div>
+        </div>
+        <div class="civ-face civ-back" id="civBack">
+          <div class="civ-face-top">
+            <div class="civ-cat" id="civCatBack"></div>
+            <div class="civ-star" id="civStarBack"></div>
+          </div>
+          <div class="civ-alabel">Accepted answers</div>
+          <div class="civ-imgs-wrap" id="civImgWrap" style="display:none;">
+            <div class="civ-imgs" id="civImgBox"></div>
+            <div class="civ-img-caption">Images via Wikipedia</div>
+          </div>
+          <ul class="civ-answers" id="civAnswerList"></ul>
+          <div id="civNoteBox"></div>
+          <div class="civ-backhint">Tap card to flip back</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="civ-grade">
+      <button class="civ-miss" id="civMissBtn">✗ Missed it</button>
+      <button class="civ-got" id="civGotBtn">✓ Got it right</button>
+    </div>
+    <div class="civ-master-row" id="civMasterRow">
+      <button class="civ-master-link" id="civMasterBtn">✓ I already know this — mark mastered</button>
+    </div>
+    <div class="civ-footnote" id="civFootnote">Each card appears once per session — 3 correct in a row retires it for good.</div>
+  </div>
+
+  <div id="civDoneArea" style="display:none;" class="civ-done">
+    <div style="font-size:34px;" id="civDoneEmoji">📇</div>
+    <h3 id="civDoneHeading">Session complete</h3>
+    <p id="civDoneText"></p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+      <button id="civDoneReset" data-mode="newSession">Start new session ↻</button>
+      <button id="civDoneSecondary" style="display:none;background:transparent;color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:10px 20px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:12px;">Back to practice</button>
+    </div>
+  </div>
+
+  <div class="civ-modal-overlay" id="civStatsOverlay" style="display:none;">
+    <div class="civ-modal">
+      <div class="civ-modal-head">
+        <h3>Focus areas</h3>
+        <button id="civStatsClose">✕</button>
+      </div>
+      <h4>Needs the most work</h4>
+      <ol id="civTopWrong"></ol>
+      <h4>Your strongest</h4>
+      <ol id="civTopRight"></ol>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+const QUESTIONS = [
+{id:1,cat:'principles',star:false,q:`What is the form of government of the United States?`,a:[`Republic`,`Constitution-based federal republic`,`Representative democracy`]},
+{id:2,cat:'principles',star:true,q:`What is the supreme law of the land?`,a:[`(U.S.) Constitution`],imgQuery:`United States Constitution`},
+{id:3,cat:'principles',star:false,q:`Name one thing the U.S. Constitution does.`,a:[`Forms the government`,`Defines powers of government`,`Defines the parts of government`,`Protects the rights of the people`]},
+{id:4,cat:'principles',star:false,q:`The U.S. Constitution starts with the words "We the People." What does "We the People" mean?`,a:[`Self-government`,`Popular sovereignty`,`Consent of the governed`,`People should govern themselves`,`(Example of) social contract`]},
+{id:5,cat:'principles',star:false,q:`How are changes made to the U.S. Constitution?`,a:[`Amendments`,`The amendment process`]},
+{id:6,cat:'principles',star:false,q:`What does the Bill of Rights protect?`,a:[`(The basic) rights of Americans`,`(The basic) rights of people living in the United States`],imgQuery:`United States Bill of Rights`},
+{id:7,cat:'principles',star:true,q:`How many amendments does the U.S. Constitution have?`,a:[`Twenty-seven (27)`]},
+{id:8,cat:'principles',star:false,q:`Why is the Declaration of Independence important?`,a:[`It says America is free from British control.`,`It says all people are created equal.`,`It identifies inherent rights.`,`It identifies individual freedoms.`]},
+{id:9,cat:'principles',star:false,q:`What founding document said the American colonies were free from Britain?`,a:[`Declaration of Independence`],imgQuery:`United States Declaration of Independence`},
+{id:10,cat:'principles',star:false,q:`Name two important ideas from the Declaration of Independence and the U.S. Constitution.`,a:[`Equality`,`Liberty`,`Social contract`,`Natural rights`,`Limited government`,`Self-government`]},
+{id:11,cat:'principles',star:false,q:`The words "Life, Liberty, and the pursuit of Happiness" are in what founding document?`,a:[`Declaration of Independence`]},
+{id:12,cat:'principles',star:true,q:`What is the economic system of the United States?`,a:[`Capitalism`,`Free market economy`]},
+{id:13,cat:'principles',star:false,q:`What is the rule of law?`,a:[`Everyone must follow the law.`,`Leaders must obey the law.`,`Government must obey the law.`,`No one is above the law.`]},
+{id:14,cat:'principles',star:false,q:`Many documents influenced the U.S. Constitution. Name one.`,a:[`Declaration of Independence`,`Articles of Confederation`,`Federalist Papers`,`Anti-Federalist Papers`,`Virginia Declaration of Rights`,`Fundamental Orders of Connecticut`,`Mayflower Compact`,`Iroquois Great Law of Peace`]},
+{id:15,cat:'principles',star:false,q:`There are three branches of government. Why?`,a:[`So one part does not become too powerful`,`Checks and balances`,`Separation of powers`]},
+
+{id:16,cat:'system',star:false,q:`Name the three branches of government.`,a:[`Legislative, executive, and judicial`,`Congress, president, and the courts`]},
+{id:17,cat:'system',star:false,q:`The President of the United States is in charge of which branch of government?`,a:[`Executive branch`]},
+{id:18,cat:'system',star:false,q:`What part of the federal government writes laws?`,a:[`(U.S.) Congress`,`(U.S. or national) legislature`,`Legislative branch`],imgQuery:`United States Capitol`},
+{id:19,cat:'system',star:false,q:`What are the two parts of the U.S. Congress?`,a:[`Senate and House (of Representatives)`]},
+{id:20,cat:'system',star:true,q:`Name one power of the U.S. Congress.`,a:[`Writes laws`,`Declares war`,`Makes the federal budget`]},
+{id:21,cat:'system',star:false,q:`How many U.S. senators are there?`,a:[`One hundred (100)`]},
+{id:22,cat:'system',star:false,q:`How long is a term for a U.S. senator?`,a:[`Six (6) years`]},
+{id:23,cat:'system',star:false,q:`Who is one of your state's U.S. senators now?`,a:[`Rick Scott`,`Ashley Moody`],note:`Filled in for Gulfport, FL 33707. Good through your Sept 18, 2026 interview — Florida's Senate election isn't until Nov 3, 2026.`,imgQuery:[`Rick Scott`,`Ashley Moody`]},
+{id:24,cat:'system',star:false,q:`How many voting members are in the House of Representatives?`,a:[`Four hundred thirty-five (435)`]},
+{id:25,cat:'system',star:false,q:`How long is a term for a member of the House of Representatives?`,a:[`Two (2) years`]},
+{id:26,cat:'system',star:false,q:`Why do U.S. representatives serve shorter terms than U.S. senators?`,a:[`To more closely follow public opinion`]},
+{id:27,cat:'system',star:false,q:`How many senators does each state have?`,a:[`Two (2)`]},
+{id:28,cat:'system',star:false,q:`Why does each state have two senators?`,a:[`Equal representation (for small states)`,`The Great Compromise (Connecticut Compromise)`]},
+{id:29,cat:'system',star:false,q:`Name your U.S. representative.`,a:[`Anna Paulina Luna`],note:`Filled in for Gulfport, FL 33707 (FL-13). Good through your Sept 18, 2026 interview — Florida's House election isn't until Nov 3, 2026.`,imgQuery:`Anna Paulina Luna`},
+{id:30,cat:'system',star:true,q:`What is the name of the Speaker of the House of Representatives now?`,a:[`Mike Johnson`],note:`Current as of Aug 2026 and should hold through your Sept 18 interview — worth a quick double-check at uscis.gov/citizenship/testupdates the week before, just in case.`,imgQuery:`Mike Johnson (Louisiana politician)`},
+{id:31,cat:'system',star:false,q:`Who does a U.S. senator represent?`,a:[`Citizens of their state`,`People of their state`]},
+{id:32,cat:'system',star:false,q:`Who elects U.S. senators?`,a:[`Citizens from their state`]},
+{id:33,cat:'system',star:false,q:`Who does a member of the House of Representatives represent?`,a:[`Citizens in their (congressional) district`,`Citizens in their district`,`People from their (congressional) district`,`People in their district`]},
+{id:34,cat:'system',star:false,q:`Who elects members of the House of Representatives?`,a:[`Citizens from their (congressional) district`]},
+{id:35,cat:'system',star:false,q:`Some states have more representatives than other states. Why?`,a:[`(Because of) the state's population`,`(Because) they have more people`,`(Because) some states have more people`]},
+{id:36,cat:'system',star:true,q:`The President of the United States is elected for how many years?`,a:[`Four (4) years`]},
+{id:37,cat:'system',star:false,q:`The President of the United States can serve only two terms. Why?`,a:[`(Because of) the 22nd Amendment`,`To keep the president from becoming too powerful`]},
+{id:38,cat:'system',star:true,q:`What is the name of the President of the United States now?`,a:[`Donald Trump`],note:`Current as of Aug 2026 and should hold through your Sept 18 interview — worth a quick double-check at uscis.gov/citizenship/testupdates the week before, just in case.`,imgQuery:`Donald Trump`},
+{id:39,cat:'system',star:true,q:`What is the name of the Vice President of the United States now?`,a:[`JD Vance`],note:`Current as of Aug 2026 and should hold through your Sept 18 interview — worth a quick double-check at uscis.gov/citizenship/testupdates the week before, just in case.`,imgQuery:`JD Vance`},
+{id:40,cat:'system',star:false,q:`If the president can no longer serve, who becomes president?`,a:[`The Vice President (of the United States)`]},
+{id:41,cat:'system',star:false,q:`Name one power of the president.`,a:[`Signs bills into law`,`Vetoes bills`,`Enforces laws`,`Commander in Chief (of the military)`,`Chief diplomat`,`Appoints federal judges`]},
+{id:42,cat:'system',star:false,q:`Who is Commander in Chief of the U.S. military?`,a:[`The President (of the United States)`]},
+{id:43,cat:'system',star:false,q:`Who signs bills to become laws?`,a:[`The President (of the United States)`]},
+{id:44,cat:'system',star:true,q:`Who vetoes bills?`,a:[`The President (of the United States)`]},
+{id:45,cat:'system',star:false,q:`Who appoints federal judges?`,a:[`The President (of the United States)`]},
+{id:46,cat:'system',star:false,q:`The executive branch has many parts. Name one.`,a:[`President (of the United States)`,`Cabinet`,`Federal departments and agencies`],imgQuery:`White House`},
+{id:47,cat:'system',star:false,q:`What does the President's Cabinet do?`,a:[`Advises the President (of the United States)`]},
+{id:48,cat:'system',star:false,q:`What are two Cabinet-level positions?`,a:[`Attorney General`,`Secretary of Agriculture`,`Secretary of Commerce`,`Secretary of Education`,`Secretary of Energy`,`Secretary of Health and Human Services`,`Secretary of Homeland Security`,`Secretary of Housing and Urban Development`,`Secretary of the Interior`,`Secretary of Labor`,`Secretary of State`,`Secretary of Transportation`,`Secretary of the Treasury`,`Secretary of Veterans Affairs`,`Secretary of War (Defense)`,`Vice-President`,`Administrator of the EPA`,`Administrator of the Small Business Administration`,`Director of the CIA`,`Director of the Office of Management and Budget`,`Director of National Intelligence`,`United States Trade Representative`]},
+{id:49,cat:'system',star:false,q:`Why is the Electoral College important?`,a:[`It decides who is elected president.`,`It provides a compromise between the popular election of the president and congressional selection.`]},
+{id:50,cat:'system',star:false,q:`What is one part of the judicial branch?`,a:[`Supreme Court`,`Federal Courts`]},
+{id:51,cat:'system',star:false,q:`What does the judicial branch do?`,a:[`Reviews laws`,`Explains laws`,`Resolves disputes (disagreements) about the law`,`Decides if a law goes against the (U.S.) Constitution`]},
+{id:52,cat:'system',star:true,q:`What is the highest court in the United States?`,a:[`Supreme Court`],imgQuery:`Supreme Court of the United States`},
+{id:53,cat:'system',star:false,q:`How many seats are on the Supreme Court?`,a:[`Nine (9)`]},
+{id:54,cat:'system',star:false,q:`How many Supreme Court justices are usually needed to decide a case?`,a:[`Five (5)`]},
+{id:55,cat:'system',star:false,q:`How long do Supreme Court justices serve?`,a:[`(For) life`,`Lifetime appointment`,`(Until) retirement`]},
+{id:56,cat:'system',star:false,q:`Supreme Court justices serve for life. Why?`,a:[`To be independent (of politics)`,`To limit outside (political) influence`]},
+{id:57,cat:'system',star:false,q:`Who is the Chief Justice of the United States now?`,a:[`John Roberts`],note:`Current as of Aug 2026 and should hold through your Sept 18 interview — worth a quick double-check at uscis.gov/citizenship/testupdates the week before, just in case.`,imgQuery:`John Roberts`},
+{id:58,cat:'system',star:false,q:`Name one power that is only for the federal government.`,a:[`Print paper money`,`Mint coins`,`Declare war`,`Create an army`,`Make treaties`,`Set foreign policy`]},
+{id:59,cat:'system',star:false,q:`Name one power that is only for the states.`,a:[`Provide schooling and education`,`Provide protection (police)`,`Provide safety (fire departments)`,`Give a driver's license`,`Approve zoning and land use`]},
+{id:60,cat:'system',star:false,q:`What is the purpose of the 10th Amendment?`,a:[`(It states that the) powers not given to the federal government belong to the states or to the people.`]},
+{id:61,cat:'system',star:true,q:`Who is the governor of your state now?`,a:[`Ron DeSantis`],note:`Filled in for Florida. Good through your Sept 18, 2026 interview — DeSantis stays in office until the newly elected governor is inaugurated in January 2027.`,imgQuery:`Ron DeSantis`},
+{id:62,cat:'system',star:false,q:`What is the capital of your state?`,a:[`Tallahassee`],note:`Filled in for Florida.`},
+
+{id:63,cat:'rights',star:false,q:`There are four amendments to the U.S. Constitution about who can vote. Describe one of them.`,a:[`Citizens eighteen (18) and older (can vote).`,`You don't have to pay (a poll tax) to vote.`,`Any citizen can vote. (Women and men can vote.)`,`A male citizen of any race (can vote).`]},
+{id:64,cat:'rights',star:false,q:`Who can vote in federal elections, run for federal office, and serve on a jury in the United States?`,a:[`Citizens`,`Citizens of the United States`,`U.S. citizens`]},
+{id:65,cat:'rights',star:false,q:`What are three rights of everyone living in the United States?`,a:[`Freedom of expression`,`Freedom of speech`,`Freedom of assembly`,`Freedom to petition the government`,`Freedom of religion`,`The right to bear arms`]},
+{id:66,cat:'rights',star:true,q:`What do we show loyalty to when we say the Pledge of Allegiance?`,a:[`The United States`,`The flag`]},
+{id:67,cat:'rights',star:false,q:`Name two promises that new citizens make in the Oath of Allegiance.`,a:[`Give up loyalty to other countries`,`Defend the (U.S.) Constitution`,`Obey the laws of the United States`,`Serve in the military (if needed)`,`Serve (help, do important work for) the nation (if needed)`,`Be loyal to the United States`]},
+{id:68,cat:'rights',star:false,q:`How can people become United States citizens?`,a:[`Be born in the United States, under the conditions set by the 14th Amendment`,`Naturalize`,`Derive citizenship (under conditions set by Congress)`]},
+{id:69,cat:'rights',star:false,q:`What are two examples of civic participation in the United States?`,a:[`Vote`,`Run for office`,`Join a political party`,`Help with a campaign`,`Join a civic group`,`Join a community group`,`Give an elected official your opinion (on an issue)`,`Contact elected officials`,`Support or oppose an issue or policy`,`Write to a newspaper`]},
+{id:70,cat:'rights',star:false,q:`What is one way Americans can serve their country?`,a:[`Vote`,`Pay taxes`,`Obey the law`,`Serve in the military`,`Run for office`,`Work for local, state, or federal government`]},
+{id:71,cat:'rights',star:false,q:`Why is it important to pay federal taxes?`,a:[`Required by law`,`All people pay to fund the federal government`,`Required by the (U.S.) Constitution (16th Amendment)`,`Civic duty`]},
+{id:72,cat:'rights',star:false,q:`It is important for all men age 18 through 25 to register for the Selective Service. Name one reason why.`,a:[`Required by law`,`Civic duty`,`Makes the draft fair, if needed`]},
+
+{id:73,cat:'colonial',star:false,q:`The colonists came to America for many reasons. Name one.`,a:[`Freedom`,`Political liberty`,`Religious freedom`,`Economic opportunity`,`Escape persecution`]},
+{id:74,cat:'colonial',star:true,q:`Who lived in America before the Europeans arrived?`,a:[`American Indians`,`Native Americans`]},
+{id:75,cat:'colonial',star:false,q:`What group of people was taken and sold as slaves?`,a:[`Africans`,`People from Africa`]},
+{id:76,cat:'colonial',star:false,q:`What war did the Americans fight to win independence from Britain?`,a:[`American Revolution`,`The (American) Revolutionary War`,`War for (American) Independence`]},
+{id:77,cat:'colonial',star:false,q:`Name one reason why the Americans declared independence from Britain.`,a:[`High taxes`,`Taxation without representation`,`British soldiers stayed in Americans' houses (boarding, quartering)`,`They did not have self-government`,`Boston Massacre`,`Boston Tea Party (Tea Act)`,`Stamp Act`,`Sugar Act`,`Townshend Acts`,`Intolerable (Coercive) Acts`]},
+{id:78,cat:'colonial',star:true,q:`Who wrote the Declaration of Independence?`,a:[`(Thomas) Jefferson`]},
+{id:79,cat:'colonial',star:false,q:`When was the Declaration of Independence adopted?`,a:[`July 4, 1776`]},
+{id:80,cat:'colonial',star:false,q:`The American Revolution had many important events. Name one.`,a:[`(Battle of) Bunker Hill`,`Declaration of Independence`,`Washington Crossing the Delaware (Battle of Trenton)`,`(Battle of) Saratoga`,`Valley Forge (Encampment)`,`(Battle of) Yorktown (British surrender at Yorktown)`]},
+{id:81,cat:'colonial',star:false,q:`There were 13 original states. Name five.`,a:[`New Hampshire`,`Massachusetts`,`Rhode Island`,`Connecticut`,`New York`,`New Jersey`,`Pennsylvania`,`Delaware`,`Maryland`,`Virginia`,`North Carolina`,`South Carolina`,`Georgia`]},
+{id:82,cat:'colonial',star:false,q:`What founding document was written in 1787?`,a:[`(U.S.) Constitution`]},
+{id:83,cat:'colonial',star:false,q:`The Federalist Papers supported the passage of the U.S. Constitution. Name one of the writers.`,a:[`(James) Madison`,`(Alexander) Hamilton`,`(John) Jay`,`Publius`]},
+{id:84,cat:'colonial',star:false,q:`Why were the Federalist Papers important?`,a:[`They helped people understand the (U.S.) Constitution.`,`They supported passing the (U.S.) Constitution.`]},
+{id:85,cat:'colonial',star:false,q:`Benjamin Franklin is famous for many things. Name one.`,a:[`Founded the first free public libraries`,`First Postmaster General of the United States`,`Helped write the Declaration of Independence`,`Inventor`,`U.S. diplomat`],imgQuery:`Benjamin Franklin`},
+{id:86,cat:'colonial',star:true,q:`George Washington is famous for many things. Name one.`,a:[`"Father of Our Country"`,`First president of the United States`,`General of the Continental Army`,`President of the Constitutional Convention`],imgQuery:`George Washington`},
+{id:87,cat:'colonial',star:false,q:`Thomas Jefferson is famous for many things. Name one.`,a:[`Writer of the Declaration of Independence`,`Third president of the United States`,`Doubled the size of the United States (Louisiana Purchase)`,`First Secretary of State`,`Founded the University of Virginia`,`Writer of the Virginia Statute on Religious Freedom`],imgQuery:`Thomas Jefferson`},
+{id:88,cat:'colonial',star:false,q:`James Madison is famous for many things. Name one.`,a:[`"Father of the Constitution"`,`Fourth president of the United States`,`President during the War of 1812`,`One of the writers of the Federalist Papers`],imgQuery:`James Madison`},
+{id:89,cat:'colonial',star:false,q:`Alexander Hamilton is famous for many things. Name one.`,a:[`First Secretary of the Treasury`,`One of the writers of the Federalist Papers`,`Helped establish the First Bank of the United States`,`Aide to General George Washington`,`Member of the Continental Congress`],imgQuery:`Alexander Hamilton`},
+
+{id:90,cat:'era1800s',star:false,q:`What territory did the United States buy from France in 1803?`,a:[`Louisiana Territory`,`Louisiana`]},
+{id:91,cat:'era1800s',star:false,q:`Name one war fought by the United States in the 1800s.`,a:[`War of 1812`,`Mexican-American War`,`Civil War`,`Spanish-American War`]},
+{id:92,cat:'era1800s',star:false,q:`Name the U.S. war between the North and the South.`,a:[`The Civil War`],imgQuery:`American Civil War`},
+{id:93,cat:'era1800s',star:false,q:`The Civil War had many important events. Name one.`,a:[`(Battle of) Fort Sumter`,`Emancipation Proclamation`,`(Battle of) Vicksburg`,`(Battle of) Gettysburg`,`Sherman's March`,`(Surrender at) Appomattox`,`(Battle of) Antietam/Sharpsburg`,`Lincoln was assassinated.`]},
+{id:94,cat:'era1800s',star:true,q:`Abraham Lincoln is famous for many things. Name one.`,a:[`Freed the slaves (Emancipation Proclamation)`,`Saved (or preserved) the Union`,`Led the United States during the Civil War`,`16th president of the United States`,`Delivered the Gettysburg Address`],imgQuery:`Abraham Lincoln`},
+{id:95,cat:'era1800s',star:false,q:`What did the Emancipation Proclamation do?`,a:[`Freed the slaves`,`Freed slaves in the Confederacy`,`Freed slaves in the Confederate states`,`Freed slaves in most Southern states`]},
+{id:96,cat:'era1800s',star:false,q:`What U.S. war ended slavery?`,a:[`The Civil War`]},
+{id:97,cat:'era1800s',star:false,q:`What amendment says all persons born or naturalized in the United States, and subject to the jurisdiction thereof, are U.S. citizens?`,a:[`14th Amendment`]},
+{id:98,cat:'era1800s',star:false,q:`When did all men get the right to vote?`,a:[`After the Civil War`,`During Reconstruction`,`(With the) 15th Amendment`,`1870`]},
+{id:99,cat:'era1800s',star:false,q:`Name one leader of the women's rights movement in the 1800s.`,a:[`Susan B. Anthony`,`Elizabeth Cady Stanton`,`Sojourner Truth`,`Harriet Tubman`,`Lucretia Mott`,`Lucy Stone`],imgQuery:`Susan B. Anthony`},
+
+{id:100,cat:'recent',star:false,q:`Name one war fought by the United States in the 1900s.`,a:[`World War I`,`World War II`,`Korean War`,`Vietnam War`,`(Persian) Gulf War`]},
+{id:101,cat:'recent',star:false,q:`Why did the United States enter World War I?`,a:[`Because Germany attacked U.S. (civilian) ships`,`To support the Allied Powers (England, France, Italy, and Russia)`,`To oppose the Central Powers (Germany, Austria-Hungary, the Ottoman Empire, and Bulgaria)`]},
+{id:102,cat:'recent',star:false,q:`When did all women get the right to vote?`,a:[`1920`,`After World War I`,`(With the) 19th Amendment`]},
+{id:103,cat:'recent',star:false,q:`What was the Great Depression?`,a:[`Longest economic recession in modern history`]},
+{id:104,cat:'recent',star:false,q:`When did the Great Depression start?`,a:[`The Great Crash (1929)`,`Stock market crash of 1929`]},
+{id:105,cat:'recent',star:false,q:`Who was president during the Great Depression and World War II?`,a:[`(Franklin) Roosevelt`],imgQuery:`Franklin D. Roosevelt`},
+{id:106,cat:'recent',star:false,q:`Why did the United States enter World War II?`,a:[`(Bombing of) Pearl Harbor`,`Japanese attacked Pearl Harbor`,`To support the Allied Powers (England, France, and Russia)`,`To oppose the Axis Powers (Germany, Italy, and Japan)`]},
+{id:107,cat:'recent',star:false,q:`Dwight Eisenhower is famous for many things. Name one.`,a:[`General during World War II`,`President at the end of (during) the Korean War`,`34th president of the United States`,`Signed the Federal-Aid Highway Act of 1956 (Created the Interstate System)`],imgQuery:`Dwight D. Eisenhower`},
+{id:108,cat:'recent',star:false,q:`Who was the United States' main rival during the Cold War?`,a:[`Soviet Union`,`USSR`,`Russia`]},
+{id:109,cat:'recent',star:false,q:`During the Cold War, what was one main concern of the United States?`,a:[`Communism`,`Nuclear war`]},
+{id:110,cat:'recent',star:false,q:`Why did the United States enter the Korean War?`,a:[`To stop the spread of communism`]},
+{id:111,cat:'recent',star:false,q:`Why did the United States enter the Vietnam War?`,a:[`To stop the spread of communism`]},
+{id:112,cat:'recent',star:false,q:`What did the civil rights movement do?`,a:[`Fought to end racial discrimination`]},
+{id:113,cat:'recent',star:true,q:`Martin Luther King, Jr. is famous for many things. Name one.`,a:[`Fought for civil rights`,`Worked for equality for all Americans`,`Worked to ensure that people would "not be judged by the color of their skin, but by the content of their character"`],imgQuery:`Martin Luther King Jr.`},
+{id:114,cat:'recent',star:false,q:`Why did the United States enter the Persian Gulf War?`,a:[`To force the Iraqi military from Kuwait`]},
+{id:115,cat:'recent',star:true,q:`What major event happened on September 11, 2001 in the United States?`,a:[`Terrorists attacked the United States`,`Terrorists took over two planes and crashed them into the World Trade Center in New York City`,`Terrorists took over a plane and crashed into the Pentagon in Arlington, Virginia`,`Terrorists took over a plane originally aimed at Washington, D.C., and crashed in a field in Pennsylvania`]},
+{id:116,cat:'recent',star:false,q:`Name one U.S. military conflict after the September 11, 2001 attacks.`,a:[`(Global) War on Terror`,`War in Afghanistan`,`War in Iraq`]},
+{id:117,cat:'recent',star:false,q:`Name one American Indian tribe in the United States.`,a:[`Apache`,`Blackfeet`,`Cayuga`,`Cherokee`,`Cheyenne`,`Chippewa`,`Choctaw`,`Creek`,`Crow`,`Hopi`,`Huron`,`Inupiat`,`Lakota`,`Mohawk`,`Mohegan`,`Navajo`,`Oneida`,`Onondaga`,`Pueblo`,`Seminole`,`Seneca`,`Shawnee`,`Sioux`,`Teton`,`Tuscarora`]},
+{id:118,cat:'recent',star:false,q:`Name one example of an American innovation.`,a:[`Light bulb`,`Automobile (cars, internal combustion engine)`,`Skyscrapers`,`Airplane`,`Assembly line`,`Landing on the moon`,`Integrated circuit (IC)`]},
+
+{id:119,cat:'symbols',star:false,q:`What is the capital of the United States?`,a:[`Washington, D.C.`],imgQuery:`Washington, D.C.`},
+{id:120,cat:'symbols',star:false,q:`Where is the Statue of Liberty?`,a:[`New York (Harbor)`,`Liberty Island`,`(Also acceptable: New Jersey, near New York City, on the Hudson River)`],imgQuery:`Statue of Liberty`},
+{id:121,cat:'symbols',star:true,q:`Why does the flag have 13 stripes?`,a:[`(Because there were) 13 original colonies`,`(Because the stripes) represent the original colonies`],imgQuery:`Flag of the United States`},
+{id:122,cat:'symbols',star:false,q:`Why does the flag have 50 stars?`,a:[`(Because there is) one star for each state`,`(Because) each star represents a state`,`(Because there are) 50 states`],imgQuery:`Flag of the United States`},
+{id:123,cat:'symbols',star:false,q:`What is the name of the national anthem?`,a:[`The Star-Spangled Banner`]},
+{id:124,cat:'symbols',star:false,q:`The Nation's first motto was "E Pluribus Unum." What does that mean?`,a:[`Out of many, one`,`We all become one`]},
+
+{id:125,cat:'holidays',star:false,q:`What is Independence Day?`,a:[`A holiday to celebrate U.S. independence (from Britain)`,`The country's birthday`]},
+{id:126,cat:'holidays',star:true,q:`Name three national U.S. holidays.`,a:[`New Year's Day`,`Martin Luther King, Jr. Day`,`Presidents Day (Washington's Birthday)`,`Memorial Day`,`Juneteenth`,`Independence Day`,`Labor Day`,`Columbus Day`,`Veterans Day`,`Thanksgiving Day`,`Christmas Day`]},
+{id:127,cat:'holidays',star:false,q:`What is Memorial Day?`,a:[`A holiday to honor soldiers who died in military service`]},
+{id:128,cat:'holidays',star:false,q:`What is Veterans Day?`,a:[`A holiday to honor people in the (U.S.) military`,`A holiday to honor people who have served (in the U.S. military)`]},
+];
+
+const CAT_META = {
+  principles:{label:'Principles of Government', icon:`<path d="M12 3v18M6 7h12M6 7l-3 6h6l-3-6zM18 7l-3 6h6l-3-6zM4 21h16"/>`},
+  system:{label:'System of Government', icon:`<path d="M4 21h16M5 21V10M19 21V10M12 3l8 5H4l8-5zM8 10v11M12 10v11M16 10v11"/>`},
+  rights:{label:'Rights & Responsibilities', icon:`<path d="M7 11V6a2 2 0 0 1 4 0v5M11 11V5a2 2 0 0 1 4 0v6M15 11V7a2 2 0 0 1 4 0v7c0 3-2 6-6 6H11c-3 0-4-1-6-4l-1.5-2.5A1.4 1.4 0 0 1 5 14.5c.6-.6 1.6-.6 2.2 0L9 16"/>`},
+  colonial:{label:'Colonial Period & Independence', icon:`<path d="M12 2a5 5 0 0 1 5 5c0 5 2 8 2 8H5s2-3 2-8a5 5 0 0 1 5-5zM9 15v1a3 3 0 0 0 6 0v-1M4 19h16"/>`},
+  era1800s:{label:'The 1800s', icon:`<path d="M8 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM16 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zM8 10v10M16 10v10M4 14h8M12 14h8"/>`},
+  recent:{label:'Recent American History', icon:`<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4a12 12 0 0 1 0 16M12 4a12 12 0 0 0 0 16"/>`},
+  symbols:{label:'Symbols', icon:`<path d="M5 3v18M5 4h13l-3 4 3 4H5"/>`},
+  holidays:{label:'Holidays', icon:`<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/><path d="M12 13l1 2h2l-1.6 1.5.6 2-2-1.2-2 1.2.6-2L9 15h2z"/>`},
+};
+
+const STORAGE_KEY = 'civics-progress-v1';
+let progress = { streaks:{}, mastered:[], tally:{} };
+let filter = 'all';
+let mode = 'practice'; // 'practice' | 'test'
+let currentQ = null;
+let flipped = false;
+let sessionQueue = [];
+let sessionPointer = 0;
+let sessionReviewed = 0;
+let sessionCorrect = 0;
+let sessionMastered = 0;
+let awaitingNext = false;
+
+let testQueue = [];
+let testPointer = 0;
+let testCorrect = 0;
+let testWrong = 0;
+let testTotal = 20;
+let testPass = 12;
+let testFailAt = 9;
+
+const hasCloudStorage = !!(window.storage && typeof window.storage.get === 'function' && typeof window.storage.set === 'function');
+let cloudStorageWorking = hasCloudStorage;
+
+const $ = (id) => document.getElementById(id);
+
+function updateSyncStatusText(){
+  const el = $('civSyncStatus');
+  if(!el) return;
+  if(cloudStorageWorking){
+    el.textContent = 'Progress saves automatically to your account — safe to close your browser.';
+  } else {
+    el.textContent = "No account-level storage detected in this browser session — link a local file below so progress survives a reload.";
+  }
+}
+
+/* ---- Theme (dark mode) ---- */
+const THEME_KEY = 'civics-theme-v1';
+
+function applyTheme(isDark){
+  $('civRoot').classList.toggle('civ-dark', isDark);
+  document.documentElement.classList.toggle('civ-dark', isDark);
+  document.body.classList.toggle('civ-dark', isDark);
+  const btn = $('civThemeToggle');
+  if(btn){
+    btn.textContent = isDark ? '☀️' : '🌙';
+    btn.title = isDark ? 'Switch to light mode' : 'Switch to dark mode';
+  }
+}
+
+async function loadTheme(){
+  if(hasCloudStorage){
+    try{
+      const res = await window.storage.get(THEME_KEY, false);
+      if(res && res.value){
+        applyTheme(res.value === 'dark');
+        return;
+      }
+    }catch(e){ /* fall through to system preference */ }
+  }
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme(!!prefersDark);
+}
+
+async function toggleTheme(){
+  const isDark = !$('civRoot').classList.contains('civ-dark');
+  applyTheme(isDark);
+  if(hasCloudStorage){
+    try{ await window.storage.set(THEME_KEY, isDark ? 'dark' : 'light', false); }
+    catch(e){ /* theme just won't persist — not critical */ }
+  }
+}
+
+async function loadProgress(){
+  if(!hasCloudStorage) return;
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value){
+      const parsed = JSON.parse(res.value);
+      progress = { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+    }
+  }catch(e){
+    cloudStorageWorking = false;
+  }
+}
+async function saveProgress(){
+  if(hasCloudStorage){
+    try{
+      await window.storage.set(STORAGE_KEY, JSON.stringify(progress), false);
+      cloudStorageWorking = true;
+    }catch(e){
+      cloudStorageWorking = false;
+      console.error('civics save failed', e);
+    }
+    updateSyncStatusText();
+  }
+  writeLocalFile();
+}
+
+function masteredSet(){ return new Set(progress.mastered); }
+
+function activePool(){
+  const mset = masteredSet();
+  return QUESTIONS.filter(q => !mset.has(q.id) && (filter === 'all' || q.star));
+}
+
+function renderStats(){
+  const total = filter === 'all' ? 128 : 20;
+  const mset = masteredSet();
+  const masteredInScope = (filter === 'all' ? QUESTIONS : QUESTIONS.filter(q=>q.star))
+    .filter(q => mset.has(q.id)).length;
+  $('civMasteredCount').textContent = `${masteredInScope} / ${total}`;
+  $('civMasteredBar').style.width = `${(masteredInScope/total*100).toFixed(1)}%`;
+
+  if(mode === 'test'){
+    $('civSessionLabel').textContent = 'Mock test';
+    $('civSessionStat').textContent = testQueue.length
+      ? `Q${Math.min(testPointer+1, testQueue.length)}/${testQueue.length} · ${testCorrect}✓ ${testWrong}✗ (need ${testPass})`
+      : '—';
+  } else {
+    $('civSessionLabel').textContent = 'This session';
+    const pct = sessionReviewed ? Math.round(sessionCorrect/sessionReviewed*100) : 0;
+    $('civSessionStat').textContent = sessionQueue.length
+      ? `${Math.min(sessionPointer+1, sessionQueue.length)} of ${sessionQueue.length}${sessionReviewed ? ` · ${pct}% correct` : ''}`
+      : `0 reviewed`;
+  }
+}
+
+function iconSvg(catKey){
+  const meta = CAT_META[catKey];
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${meta.icon}</svg>`;
+}
+
+function renderDots(streak){
+  let html = '';
+  for(let i=0;i<3;i++){
+    html += `<div class="civ-dot ${i<streak?'filled':''}"></div>`;
+  }
+  return html;
+}
+
+function shuffle(arr){
+  for(let i = arr.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function startSession(){
+  sessionQueue = shuffle(activePool().map(q => q.id));
+  sessionPointer = 0;
+  sessionReviewed = 0;
+  sessionCorrect = 0;
+  sessionMastered = 0;
+  currentQ = sessionQueue.length ? QUESTIONS.find(q => q.id === sessionQueue[0]) : null;
+}
+
+function buildTestSession(){
+  const poolQs = filter === 'star' ? QUESTIONS.filter(q => q.star) : QUESTIONS;
+  testTotal = filter === 'star' ? 10 : 20;
+  testPass = filter === 'star' ? 6 : 12;
+  testFailAt = testTotal - testPass + 1;
+  testQueue = shuffle(poolQs.map(q => q.id)).slice(0, testTotal);
+  testPointer = 0;
+  testCorrect = 0;
+  testWrong = 0;
+  currentQ = testQueue.length ? QUESTIONS.find(q => q.id === testQueue[0]) : null;
+}
+
+function advanceCard(){
+  sessionPointer++;
+  if(sessionPointer >= sessionQueue.length){
+    currentQ = null;
+    return;
+  }
+  currentQ = QUESTIONS.find(q => q.id === sessionQueue[sessionPointer]);
+}
+
+function renderCard(){
+  const playArea = $('civPlayArea');
+  const doneArea = $('civDoneArea');
+  if(!currentQ){
+    playArea.style.display = 'none';
+    doneArea.style.display = 'block';
+    if(mode === 'test'){
+      renderTestResults();
+    } else {
+      renderDoneScreen();
+    }
+    return;
+  }
+  playArea.style.display = 'block';
+  doneArea.style.display = 'none';
+
+  const isTest = mode === 'test';
+  $('civDotsFront').style.display = isTest ? 'none' : 'flex';
+  $('civMasterRow').style.display = isTest ? 'none' : 'block';
+
+  const meta = CAT_META[currentQ.cat];
+  const streak = progress.streaks[currentQ.id] || 0;
+  const tally = progress.tally[currentQ.id] || {right:0, wrong:0};
+
+  $('civCatFront').innerHTML = `${iconSvg(currentQ.cat)}<span>${meta.label}</span>`;
+  $('civCatBack').innerHTML = `${iconSvg(currentQ.cat)}<span>${meta.label}</span>`;
+  $('civDotsFront').innerHTML = renderDots(streak);
+  $('civStarBack').textContent = currentQ.star ? '★ 65/20 question' : '';
+  $('civQNum').textContent = isTest
+    ? `Mock test · question ${testPointer+1} of ${testQueue.length}`
+    : `Card ${sessionPointer+1} of ${sessionQueue.length} this session`;
+  $('civQText').textContent = currentQ.q;
+  $('civQTally').textContent = (tally.right + tally.wrong) > 0
+    ? `All-time: ${tally.right}✓ correct · ${tally.wrong}✗ missed`
+    : `All-time: not attempted yet`;
+
+  $('civAnswerList').innerHTML = currentQ.a.map(ans => `<li>${escapeHtml(ans)}</li>`).join('');
+  $('civNoteBox').innerHTML = currentQ.note ? `<div class="civ-note">${escapeHtml(currentQ.note)}</div>` : '';
+  loadCardImages(currentQ);
+
+  const card = $('civCard');
+  card.classList.add('civ-no-anim');
+  card.classList.remove('flipped');
+  void card.offsetWidth; // force reflow so the class change applies before we re-enable transitions
+  card.classList.remove('civ-no-anim');
+  flipped = false;
+  $('civStamp').classList.remove('show');
+  awaitingNext = false;
+}
+
+function renderDoneScreen(){
+  const remaining = activePool().length;
+  if(remaining === 0){
+    $('civDoneEmoji').textContent = '🦅';
+    $('civDoneHeading').textContent = 'Every card mastered!';
+    $('civDoneText').textContent = `You've answered every question in this deck correctly three times running.`;
+    $('civDoneReset').textContent = 'Reset mastered & practice again';
+    $('civDoneReset').dataset.mode = 'resetMastered';
+    $('civDoneSecondary').style.display = 'none';
+  } else {
+    const pct = sessionReviewed ? Math.round(sessionCorrect/sessionReviewed*100) : 0;
+    $('civDoneEmoji').textContent = '📇';
+    $('civDoneHeading').textContent = 'Session complete';
+    $('civDoneText').textContent = `You saw all ${sessionQueue.length} question${sessionQueue.length===1?'':'s'} in this deck once — ${sessionCorrect}/${sessionReviewed} correct (${pct}%)${sessionMastered ? `, ${sessionMastered} newly mastered` : ''}. Mastered cards won't reappear next session.`;
+    $('civDoneReset').textContent = 'Start new session ↻';
+    $('civDoneReset').dataset.mode = 'newSession';
+    $('civDoneSecondary').style.display = 'none';
+  }
+}
+
+function renderTestResults(){
+  const asked = testPointer + 1;
+  const passed = testCorrect >= testPass;
+  $('civDoneEmoji').textContent = passed ? '🎉' : '📘';
+  $('civDoneHeading').textContent = passed ? 'You passed!' : 'Not quite — keep at it';
+  $('civDoneText').textContent = passed
+    ? `${testCorrect} correct out of ${asked} asked — that clears the ${testPass}-correct bar (out of ${testTotal}) for the real interview.`
+    : `${testCorrect} correct out of ${asked} asked. You need ${testPass} correct out of ${testTotal} to pass — ${asked < testTotal ? `this run stopped early once ${testPass} became unreachable.` : `just short this time.`}`;
+  $('civDoneReset').textContent = 'Take another test ↻';
+  $('civDoneReset').dataset.mode = 'newTest';
+  const secBtn = $('civDoneSecondary');
+  secBtn.style.display = 'inline-block';
+  secBtn.textContent = 'Back to practice';
+}
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+const imgCache = {};
+async function getWikiThumb(title){
+  if(title in imgCache) return imgCache[title];
+  try{
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(title)}`);
+    if(!res.ok){ imgCache[title] = null; return null; }
+    const data = await res.json();
+    const url = (data && data.thumbnail && data.thumbnail.source) ? data.thumbnail.source : null;
+    imgCache[title] = url;
+    return url;
+  }catch(e){
+    imgCache[title] = null;
+    return null;
+  }
+}
+
+async function loadCardImages(q){
+  const wrap = $('civImgWrap');
+  const box = $('civImgBox');
+  if(!q || !q.imgQuery){
+    wrap.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  const myId = q.id;
+  const queries = Array.isArray(q.imgQuery) ? q.imgQuery : [q.imgQuery];
+  wrap.style.display = 'block';
+  box.innerHTML = queries.map(()=> `<div class="civ-img-thumb civ-img-skeleton"></div>`).join('');
+
+  const results = await Promise.all(queries.map(getWikiThumb));
+  if(!currentQ || currentQ.id !== myId) return; // card moved on before results arrived
+
+  const withImages = results.filter(Boolean);
+  if(withImages.length === 0){
+    wrap.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  box.innerHTML = results.map((url, i) => url
+    ? `<a class="civ-img-thumb" href="https://en.wikipedia.org/wiki/${encodeURIComponent(queries[i].replace(/ /g,'_'))}" target="_blank" rel="noopener" title="${escapeHtml(queries[i])} — view on Wikipedia"><img src="${url}" alt="${escapeHtml(queries[i])}" loading="lazy"></a>`
+    : ''
+  ).join('');
+}
+
+function flipCard(){
+  if(awaitingNext) return;
+  flipped = !flipped;
+  $('civCard').classList.toggle('flipped', flipped);
+}
+
+async function grade(correct){
+  if(!currentQ || !flipped || awaitingNext) return;
+  awaitingNext = true;
+
+  const id = currentQ.id;
+  const t = progress.tally[id] || {right:0, wrong:0};
+  if(correct) t.right++; else t.wrong++;
+  progress.tally[id] = t;
+
+  if(mode === 'test'){
+    if(correct) testCorrect++; else testWrong++;
+    await saveProgress();
+    renderStats();
+    const passed = testCorrect >= testPass;
+    const failed = testWrong >= testFailAt;
+    const exhausted = testPointer + 1 >= testQueue.length;
+    if(passed || failed || exhausted){
+      setTimeout(() => { currentQ = null; renderCard(); renderStats(); }, 350);
+    } else {
+      setTimeout(() => {
+        testPointer++;
+        currentQ = QUESTIONS.find(q => q.id === testQueue[testPointer]);
+        renderCard();
+        renderStats();
+      }, 280);
+    }
+    return;
+  }
+
+  sessionReviewed++;
+  if(correct) sessionCorrect++;
+
+  const newStreak = correct ? (progress.streaks[id]||0) + 1 : 0;
+
+  if(correct && newStreak >= 3){
+    progress.mastered = Array.from(new Set([...progress.mastered, id]));
+    delete progress.streaks[id];
+    sessionMastered++;
+    $('civStamp').classList.add('show');
+    await saveProgress();
+    renderStats();
+    setTimeout(() => {
+      advanceCard();
+      renderCard();
+      renderStats();
+    }, 850);
+  } else {
+    progress.streaks[id] = newStreak;
+    await saveProgress();
+    renderStats();
+    setTimeout(() => {
+      advanceCard();
+      renderCard();
+      renderStats();
+    }, 280);
+  }
+}
+
+async function markMastered(){
+  if(!currentQ || mode === 'test' || awaitingNext) return;
+  awaitingNext = true;
+  if(!flipped){
+    flipped = true;
+    $('civCard').classList.add('flipped');
+  }
+  const id = currentQ.id;
+  progress.mastered = Array.from(new Set([...progress.mastered, id]));
+  delete progress.streaks[id];
+  sessionMastered++;
+  $('civStamp').classList.add('show');
+  await saveProgress();
+  renderStats();
+  setTimeout(() => {
+    advanceCard();
+    renderCard();
+    renderStats();
+  }, 850);
+}
+
+function setFilter(f){
+  filter = f;
+  document.querySelectorAll('#civFilterToggle button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.filter === f);
+  });
+  if(mode === 'test'){ buildTestSession(); } else { startSession(); }
+  renderCard();
+  renderStats();
+}
+
+function setMode(m){
+  mode = m;
+  document.querySelectorAll('#civModeToggle button').forEach(b=>{
+    b.classList.toggle('active', b.dataset.mode === m);
+  });
+  $('civResetBtn').style.display = m === 'test' ? 'none' : 'inline-block';
+  $('civFootnote').textContent = m === 'test'
+    ? `${testTotal} random questions, ${testPass} correct to pass — the test ends the moment passing or failing is decided.`
+    : `Each card appears once per session — 3 correct in a row retires it for good.`;
+  if(m === 'test'){ buildTestSession(); } else { startSession(); }
+  renderCard();
+  renderStats();
+}
+
+async function resetMastered(){
+  const ok = window.confirm('Reset all mastered questions? They will return to the practice pool.');
+  if(!ok) return;
+  progress = { streaks:{}, mastered:[], tally: progress.tally || {} };
+  await saveProgress();
+  startSession();
+  renderCard();
+  renderStats();
+}
+
+function exportProgress(){
+  const blob = new Blob([JSON.stringify(progress, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `civics-progress-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* ---- Optional local-file auto-sync (Chromium browsers only) ---- */
+const CIV_DB = 'civ-fs-handles';
+let fileHandle = null;
+let fileLinked = false;
+
+function idbOpen(){
+  return new Promise((resolve, reject)=>{
+    const req = indexedDB.open(CIV_DB, 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('handles');
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function idbGet(key){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('handles', 'readonly');
+    const req = tx.objectStore('handles').get(key);
+    req.onsuccess = () => resolve(req.result || null);
+    req.onerror = () => reject(req.error);
+  });
+}
+async function idbSet(key, val){
+  const db = await idbOpen();
+  return new Promise((resolve, reject)=>{
+    const tx = db.transaction('handles', 'readwrite');
+    tx.objectStore('handles').put(val, key);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+}
+
+async function verifyPermission(handle, mode='readwrite'){
+  const opts = { mode };
+  try{
+    if((await handle.queryPermission(opts)) === 'granted') return true;
+    if((await handle.requestPermission(opts)) === 'granted') return true;
+  }catch(e){ /* no gesture available, or denied */ }
+  return false;
+}
+
+function updateSyncUI(){
+  const btn = $('civSyncBtn');
+  if(!btn) return;
+  if(fileLinked && fileHandle){
+    btn.textContent = `🔗 Auto-syncing to ${fileHandle.name}`;
+  } else if(fileHandle && !fileLinked){
+    btn.textContent = `🔗 Reconnect local file (${fileHandle.name})`;
+  } else {
+    btn.textContent = `🔗 Auto-sync to a local file`;
+  }
+}
+
+async function writeLocalFile(){
+  if(!fileHandle || !fileLinked) return;
+  try{
+    const ok = await verifyPermission(fileHandle, 'readwrite');
+    if(!ok){ fileLinked = false; updateSyncUI(); return; }
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(progress, null, 2));
+    await writable.close();
+  }catch(e){ console.error('local file sync failed', e); }
+}
+
+function progressScore(p){
+  if(!p) return -1;
+  const mastered = Array.isArray(p.mastered) ? p.mastered.length : 0;
+  const tallied = p.tally ? Object.keys(p.tally).length : 0;
+  return mastered + tallied;
+}
+
+async function readFileProgress(handle){
+  try{
+    const file = await handle.getFile();
+    const text = await file.text();
+    if(!text || !text.trim()) return null;
+    const parsed = JSON.parse(text);
+    if(!parsed || typeof parsed !== 'object') return null;
+    return { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+  }catch(e){ return null; }
+}
+
+async function linkLocalFile(){
+  if(!window.showSaveFilePicker){
+    window.alert("Auto-sync to a local file needs a Chromium browser (Chrome or Edge) — this browser doesn't support it. Use the manual backup buttons instead; your progress is still saved automatically to your account either way.");
+    return;
+  }
+  try{
+    const handle = await window.showSaveFilePicker({
+      suggestedName: 'civics-progress.json',
+      types: [{ description: 'JSON', accept: {'application/json': ['.json']} }]
+    });
+    fileHandle = handle;
+    fileLinked = true;
+    await idbSet('progressFile', handle);
+
+    // Read what's already in the chosen file BEFORE writing anything to it —
+    // otherwise linking to your own backup would instantly wipe it.
+    const fileProgress = await readFileProgress(handle);
+    if(fileProgress && progressScore(fileProgress) > 0){
+      const keepFile = window.confirm(
+        `This file already has saved progress (${fileProgress.mastered.length} mastered, ${Object.keys(fileProgress.tally).length} questions tracked).\n\nOK = load that saved progress into the app now.\nCancel = keep what's currently in the app and overwrite the file with it.`
+      );
+      if(keepFile){
+        progress = fileProgress;
+        if(mode === 'test'){ buildTestSession(); } else { startSession(); }
+        renderCard();
+      }
+    }
+    await writeLocalFile();
+    updateSyncUI();
+    renderStats();
+  }catch(e){ /* user cancelled the picker */ }
+}
+
+async function onSyncClick(){
+  if(fileHandle && !fileLinked){
+    fileLinked = await verifyPermission(fileHandle, 'readwrite');
+    if(fileLinked){
+      // Reconnecting after a reload — pull in the file's progress if it's ahead of what's in memory,
+      // rather than immediately overwriting the file with whatever's currently loaded.
+      const fileProgress = await readFileProgress(fileHandle);
+      if(fileProgress && progressScore(fileProgress) > progressScore(progress)){
+        progress = fileProgress;
+        if(mode === 'test'){ buildTestSession(); } else { startSession(); }
+        renderCard();
+      }
+      await writeLocalFile();
+    }
+    updateSyncUI();
+    renderStats();
+  } else if(!fileHandle){
+    await linkLocalFile();
+  }
+}
+
+async function tryReconnectFileHandle(){
+  if(!window.indexedDB) return;
+  try{
+    const handle = await idbGet('progressFile');
+    if(!handle) return;
+    fileHandle = handle;
+    fileLinked = (await handle.queryPermission({mode:'readwrite'})) === 'granted';
+    updateSyncUI();
+    if(fileLinked){
+      // Silent reconnect succeeded — merge in the file's progress if it's richer than
+      // what we just loaded from account storage (e.g. account storage was empty/unavailable).
+      const fileProgress = await readFileProgress(fileHandle);
+      if(fileProgress && progressScore(fileProgress) > progressScore(progress)){
+        progress = fileProgress;
+      }
+    }
+  }catch(e){ /* ignore — feature unavailable in this environment */ }
+}
+
+async function importProgress(file){
+  try{
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    if(!parsed || typeof parsed !== 'object') throw new Error('invalid');
+    const incoming = { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+    const currentScore = progressScore(progress);
+    const incomingScore = progressScore(incoming);
+    if(currentScore > incomingScore){
+      const proceed = window.confirm(
+        `Your current in-app progress (${progress.mastered.length} mastered, ${Object.keys(progress.tally).length} tracked) looks further along than this file (${incoming.mastered.length} mastered, ${Object.keys(incoming.tally).length} tracked).\n\nRestore anyway and overwrite your current progress?`
+      );
+      if(!proceed) return;
+    }
+    progress = incoming;
+    await saveProgress();
+    if(mode === 'test'){ buildTestSession(); } else { startSession(); }
+    renderCard();
+    renderStats();
+    window.alert('Progress restored from backup file.');
+  }catch(e){
+    window.alert("Couldn't read that file — is it a civics progress backup .json?");
+  }
+}
+
+/* ---- Focus areas (top right/wrong questions) ---- */
+function computeTopLists(){
+  const entries = QUESTIONS.map(q => {
+    const t = progress.tally[q.id] || {right:0, wrong:0};
+    return { q, right:t.right, wrong:t.wrong, total: t.right + t.wrong };
+  }).filter(e => e.total > 0);
+  const topWrong = [...entries].filter(e => e.wrong > 0)
+    .sort((a,b) => b.wrong - a.wrong || (b.wrong/b.total) - (a.wrong/a.total)).slice(0,8);
+  const topRight = [...entries].filter(e => e.right > 0)
+    .sort((a,b) => b.right - a.right || (a.wrong - b.wrong)).slice(0,8);
+  return { topWrong, topRight };
+}
+
+function renderStatsOverlay(){
+  const { topWrong, topRight } = computeTopLists();
+  const listHtml = (arr) => arr.length
+    ? arr.map(e => `<li><span class="civ-stat-q">Q${e.q.id}. ${escapeHtml(e.q.q)}</span><span class="civ-stat-nums">${e.right}✓ · ${e.wrong}✗</span></li>`).join('')
+    : `<li class="civ-stat-empty">Not enough data yet — keep practicing.</li>`;
+  $('civTopWrong').innerHTML = listHtml(topWrong);
+  $('civTopRight').innerHTML = listHtml(topRight);
+}
+
+function openStatsOverlay(){
+  renderStatsOverlay();
+  $('civStatsOverlay').style.display = 'flex';
+}
+function closeStatsOverlay(){
+  $('civStatsOverlay').style.display = 'none';
+}
+
+function init(){
+  $('civCard').addEventListener('click', (e)=>{
+    if(e.target.closest('.civ-grade')) return;
+    flipCard();
+  });
+  $('civMissBtn').addEventListener('click', (e)=>{ e.stopPropagation(); grade(false); });
+  $('civGotBtn').addEventListener('click', (e)=>{ e.stopPropagation(); grade(true); });
+  $('civMasterBtn').addEventListener('click', (e)=>{ e.stopPropagation(); markMastered(); });
+  $('civResetBtn').addEventListener('click', resetMastered);
+  $('civDoneReset').addEventListener('click', ()=>{
+    const m = $('civDoneReset').dataset.mode;
+    if(m === 'resetMastered'){
+      resetMastered();
+    } else if(m === 'newTest'){
+      buildTestSession();
+      renderCard();
+      renderStats();
+    } else {
+      startSession();
+      renderCard();
+      renderStats();
+    }
+  });
+  $('civDoneSecondary').addEventListener('click', ()=> setMode('practice'));
+  $('civThemeToggle').addEventListener('click', toggleTheme);
+  $('civSyncBtn').addEventListener('click', onSyncClick);
+  $('civExportBtn').addEventListener('click', exportProgress);
+  $('civImportBtn').addEventListener('click', ()=> $('civImportFile').click());
+  $('civImportFile').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(file) importProgress(file);
+    e.target.value = '';
+  });
+  $('civFocusBtn').addEventListener('click', openStatsOverlay);
+  $('civStatsClose').addEventListener('click', closeStatsOverlay);
+  $('civStatsOverlay').addEventListener('click', (e)=>{
+    if(e.target.id === 'civStatsOverlay') closeStatsOverlay();
+  });
+  document.querySelectorAll('#civFilterToggle button').forEach(b=>{
+    b.addEventListener('click', ()=> setFilter(b.dataset.filter));
+  });
+  document.querySelectorAll('#civModeToggle button').forEach(b=>{
+    b.addEventListener('click', ()=> setMode(b.dataset.mode));
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(!$('civRoot').isConnected) return;
+    if(e.key === 'Escape'){ closeStatsOverlay(); return; }
+    if(e.key === ' ' || e.key === 'Enter'){ e.preventDefault(); flipCard(); }
+    if(e.key === '1' && flipped) grade(false);
+    if(e.key === '2' && flipped) grade(true);
+  });
+
+  updateSyncStatusText();
+  loadTheme();
+  loadProgress()
+    .then(() => tryReconnectFileHandle())
+    .then(() => {
+      if(mode === 'test'){ buildTestSession(); } else { startSession(); }
+      renderCard();
+      renderStats();
+    });
+}
+
+init();
+})();
+</script>
