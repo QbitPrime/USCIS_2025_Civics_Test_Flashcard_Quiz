@@ -1,3 +1,4 @@
+
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -812,6 +813,14 @@ let testFailAt = 9;
 const hasCloudStorage = !!(window.storage && typeof window.storage.get === 'function' && typeof window.storage.set === 'function');
 let cloudStorageWorking = hasCloudStorage;
 
+let localStorageWorking = false;
+try{
+  const testKey = '__civics_test__';
+  localStorage.setItem(testKey, '1');
+  localStorage.removeItem(testKey);
+  localStorageWorking = true;
+}catch(e){ localStorageWorking = false; }
+
 const $ = (id) => document.getElementById(id);
 
 function updateSyncStatusText(){
@@ -819,8 +828,10 @@ function updateSyncStatusText(){
   if(!el) return;
   if(cloudStorageWorking){
     el.textContent = 'Progress saves automatically to your account — safe to close your browser.';
+  } else if(localStorageWorking){
+    el.textContent = "Progress saves automatically in this browser — safe to close the tab, but it stays on this device/browser unless you link a local file below.";
   } else {
-    el.textContent = "No account-level storage detected in this browser session — link a local file below so progress survives a reload.";
+    el.textContent = "This browser has no working storage — link a local file below so progress survives a reload.";
   }
 }
 
@@ -846,6 +857,14 @@ async function loadTheme(){
         applyTheme(res.value === 'dark');
         return;
       }
+    }catch(e){ /* fall through */ }
+  } else if(localStorageWorking){
+    try{
+      const saved = localStorage.getItem(THEME_KEY);
+      if(saved){
+        applyTheme(saved === 'dark');
+        return;
+      }
     }catch(e){ /* fall through to system preference */ }
   }
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -858,19 +877,33 @@ async function toggleTheme(){
   if(hasCloudStorage){
     try{ await window.storage.set(THEME_KEY, isDark ? 'dark' : 'light', false); }
     catch(e){ /* theme just won't persist — not critical */ }
+  } else if(localStorageWorking){
+    try{ localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light'); }
+    catch(e){ /* theme just won't persist — not critical */ }
   }
 }
 
 async function loadProgress(){
-  if(!hasCloudStorage) return;
-  try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value){
-      const parsed = JSON.parse(res.value);
-      progress = { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+  if(hasCloudStorage){
+    try{
+      const res = await window.storage.get(STORAGE_KEY, false);
+      if(res && res.value){
+        const parsed = JSON.parse(res.value);
+        progress = { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+      }
+      return;
+    }catch(e){
+      cloudStorageWorking = false;
     }
-  }catch(e){
-    cloudStorageWorking = false;
+  }
+  if(localStorageWorking){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        progress = { streaks: parsed.streaks || {}, mastered: parsed.mastered || [], tally: parsed.tally || {} };
+      }
+    }catch(e){ localStorageWorking = false; }
   }
 }
 async function saveProgress(){
@@ -880,10 +913,17 @@ async function saveProgress(){
       cloudStorageWorking = true;
     }catch(e){
       cloudStorageWorking = false;
-      console.error('civics save failed', e);
+      console.error('civics cloud save failed', e);
     }
-    updateSyncStatusText();
+  } else if(localStorageWorking){
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    }catch(e){
+      localStorageWorking = false;
+      console.error('civics local save failed', e);
+    }
   }
+  updateSyncStatusText();
   writeLocalFile();
 }
 
